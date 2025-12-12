@@ -30,5 +30,5 @@ if sales_rep_string:
 
     if vehicle_selection:
 
-        vehicle_data = session.table("TEST_DATABASE.PUBLIC.TYRES_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle"Economy"_selection).select(col('"Tyres"'),col('"Cost"'),col('"Size (In)"'),col('"Warranty"'),col('"Economy"'),col('"Grip"'))
+        vehicle_data = session.table("TEST_DATABASE.PUBLIC.TYRES_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Tyres"'),col('"Cost"'),col('"Size (In)"'),col('"Warranty"'),col('"Economy"'),col('"Grip"'))
         st.dataframe(data=vehicle_data, use_container_width=True, hide_index=True)
