@@ -4,7 +4,7 @@ from snowflake.snowpark.functions import col
 
 
 # Write directly to the app
-st.image('https://www.clipartmax.com/png/middle/182-1828606_avant-logo-avant-logo.png', width="content")
+st.image('https://hydnum.com/wp-content/uploads/2020/11/avant-logo-new-png-1.png', width="content")
 st.title(f":tractor: Machine Order")
 
 customer_name = st.text_input('Purchaser Name:')
