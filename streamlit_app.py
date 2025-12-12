@@ -13,17 +13,17 @@ customer_name = st.text_input('Purchaser Name:')
 cnx = st.connection("snowflake")
 session = cnx.session()
 
-
 sales_member = session.table("TEST_DATABASE.PUBLIC.SALES_TEAM").select(col('Sales Team Name')).filter(col('Current_Employee')==1)
 #st.dataframe(data=sales_member, use_container_width=True)
 sales_rep_string = st.selectbox('Sales Representative:', sales_member, index=None)
 
-vehicle_list = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").select(col('"Vehicle"'),col('"Lift Capacity (KG)"'),col('"Engine Power (hp)"'),col('"Lift Height (m)"'),col('"Maximum Speed (km/h)"'),col('"Cost"'))
+vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLES")
+vehicle_list = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").select(col('"Vehicle"'))
 
 if sales_rep_string:
 
     st.subheader('Vehicles')
-    st.dataframe(data=vehicle_list, use_container_width=True, hide_index=True)
+    st.dataframe(data=vehicle_data, use_container_width=True, hide_index=True)
 
     vehicle_selection = st.selectbox('Which vehicle are you interested in?', vehicle_list, index=None)
 
