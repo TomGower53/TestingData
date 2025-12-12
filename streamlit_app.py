@@ -13,25 +13,46 @@ customer_name = st.text_input('Purchaser Name:')
 cnx = st.connection("snowflake")
 session = cnx.session()
 
-sales_member = session.table("TEST_DATABASE.PUBLIC.SALES_TEAM").select(col('Sales Team Name')).filter(col('Current_Employee')==1)
-#st.dataframe(data=sales_member, use_container_width=True)
-sales_rep_string = st.selectbox('Sales Representative:', sales_member, index=None)
+if customer_name:
 
-vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLES")
-vehicle_list = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").select(col('"Vehicle"'))
+    sales_member = session.table("TEST_DATABASE.PUBLIC.SALES_TEAM").select(col('Sales Team Name')).filter(col('Current_Employee')==1)
+    #st.dataframe(data=sales_member, use_container_width=True)
+    sales_rep_string = st.selectbox('Sales Representative:', sales_member, index=None)
 
+    vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLES")
+    vehicle_list = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").select(col('"Vehicle"'))
 
-if sales_rep_string:
+    if sales_rep_string:
 
-    st.subheader('Vehicles')
-    st.dataframe(data=vehicle_data, use_container_width=True, hide_index=True)
+        st.subheader('Vehicles')
+        st.dataframe(data=vehicle_data, use_container_width=True, hide_index=True)
 
-    vehicle_selection = st.selectbox('Which vehicle are you interested in?', vehicle_list, index=None)
+        vehicle_selection = st.selectbox('Which vehicle are you interested in?', vehicle_list, index=None)
 
-    if vehicle_selection:
+        if vehicle_selection:
 
-        st.subheader("""Tyres for """+vehicle_selection)
-        tyre_list = session.table("TEST_DATABASE.PUBLIC.TYRES_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Tyres"'),col('"Cost"'),col('"Size"'),col('"Warranty"'),col('"Economy"'),col('"Grip"'))
-        st.dataframe(data=tyre_list, use_container_width=True, hide_index=True)
+            st.subheader("""Tyres for """+vehicle_selection)
+            tyre_list = session.table("TEST_DATABASE.PUBLIC.TYRES_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Tyres"'),col('"Cost"'),col('"Size"'),col('"Warranty"'),col('"Economy"'),col('"Grip"'))
+            st.dataframe(data=tyre_list, use_container_width=True, hide_index=True)
 
-        tyre_selection = st.selectbox('Which tyres are you interested in?', tyre_list, index=0)
+            tyre_selection = st.selectbox('Which tyres are you interested in?', tyre_list, index=0)
+
+            st.subheader("""Booms for """+vehicle_selection)
+            boom_list = session.table("TEST_DATABASE.PUBLIC.BOOM_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Boom Type"'),col('"Cost"'),col('"Load Capacity (KG)"'))
+            st.dataframe(data=boom_list, use_container_width=True, hide_index=True)
+
+            accessories = st.multiselect ('Add the accessories you wish to include', boom_list)
+
+            accessories_string = ", ".join(accessories)
+
+            st.write(accessories_string)
+            #st.dataframe(data=accessories, use_container_width=True, hide_index=True)
+            
+            if accessories:
+                order_summary = """The order for """+customer_name+""" by """+sales_rep_string+""" is as follows. The """+vehicle_selection+""" with """+tyre_selection+""" tyres and """+accessories_string+""" accessories."""
+                st.write(order_summary)
+
+            else:
+                
+                order_summary1 = """The order for """+customer_name+""" by """+sales_rep_string+""" is as follows. The """+vehicle_selection+""" with """+tyre_selection+""" tyres and no further accessories."""
+                st.write(order_summary1)
