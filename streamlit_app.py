@@ -20,6 +20,7 @@ sales_rep_string = st.selectbox('Sales Representative:', sales_member, index=Non
 vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLES")
 vehicle_list = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").select(col('"Vehicle"'))
 
+
 if sales_rep_string:
 
     st.subheader('Vehicles')
@@ -29,5 +30,5 @@ if sales_rep_string:
 
     if vehicle_selection:
 
-        vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLE_ITEM_MAPPING").filter(col('"Vehicle"')==vehicle_selection).filter(col('"Part Type"')=='Tyre').select(col('"Part Name"'),col('"Add On Cost"'))
+        vehicle_data = session.table("TEST_DATABASE.PUBLIC.TYRES_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle"Economy"_selection).select(col('"Tyres"'),col('"Cost"'),col('"Size (In)"'),col('"Warranty"'),col('"Economy"'),col('"Grip"'))
         st.dataframe(data=vehicle_data, use_container_width=True, hide_index=True)
