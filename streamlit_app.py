@@ -28,8 +28,6 @@ if sales_rep_string:
 
     vehicle_selection = st.selectbox('Which vehicle are you interested in?', vehicle_list, index=None)
 
-    vehicle_selection = st.selectbox('Which vehicle are you interested in?', vehicle_list, index=None)
-
     if vehicle_selection:
 
         st.subheader("""Tyres for """+vehicle_selection)
