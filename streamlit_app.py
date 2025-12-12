@@ -5,12 +5,12 @@ from snowflake.snowpark.functions import col
 
 # Write directly to the app
 st.title(f":tractor: Machine Order")
-st.write(
-  """Check out these machines
-  [docs.streamlit.io](https://docs.streamlit.io).
-  """
-)
+
+customer_name = st.text_input('Purchaser Name:')
 
 # Get the current credentials
 cnx = st.connection("snowflake")
 session = cnx.session()
+
+sales_member = session.table("TEST_DATABASE.PUBLIC.SALES_TEAM").select(col('Sales Team Name')).filter(col('Current_Employee')==1)
+st.dataframe(data=sales_member, use_container_width=True)
