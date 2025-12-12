@@ -28,7 +28,12 @@ if sales_rep_string:
 
     vehicle_selection = st.selectbox('Which vehicle are you interested in?', vehicle_list, index=None)
 
+    vehicle_selection = st.selectbox('Which vehicle are you interested in?', vehicle_list, index=None)
+
     if vehicle_selection:
 
-        vehicle_data = session.table("TEST_DATABASE.PUBLIC.TYRES_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Tyres"'),col('"Cost"'),col('"Size (In)"'),col('"Warranty"'),col('"Economy"'),col('"Grip"'))
-        st.dataframe(data=vehicle_data, use_container_width=True, hide_index=True)
+        st.subheader("""Tyres for """+vehicle_selection)
+        tyre_list = session.table("TEST_DATABASE.PUBLIC.TYRES_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Tyres"'),col('"Cost"'),col('"Size"'),col('"Warranty"'),col('"Economy"'),col('"Grip"'))
+        st.dataframe(data=tyre_list, use_container_width=True, hide_index=True)
+
+        tyre_selection = st.selectbox('Which tyres are you interested in?', tyre_list, index=0)
