@@ -23,7 +23,7 @@ vehicle_list = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").select(col(
 if sales_rep_string:
 
     st.subheader('Vehicles')
-    st.dataframe(data=vehicle_data, use_container_width=True, hide_index=True)
+    st.dataframe(data=vehicle_list, use_container_width=True, hide_index=True)
 
     vehicle_selection = st.selectbox('Which vehicle are you interested in?', vehicle_list, index=None)
 
