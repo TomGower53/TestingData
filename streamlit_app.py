@@ -20,8 +20,14 @@ sales_rep_string = st.selectbox('Sales Representative:', sales_member, index=Non
 
 vehicle_list = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").select(col('"Vehicle"'),col('"Lift Capacity (KG)"'),col('"Engine Power (hp)"'),col('"Lift Height (m)"'),col('"Maximum Speed (km/h)"'),col('"Cost"'))
 
-
 if sales_rep_string:
 
     st.subheader('Vehicles')
-    st.dataframe(data=vehicle_list, use_container_width=True)
+    st.dataframe(data=vehicle_data, use_container_width=True, hide_index=True)
+
+    vehicle_selection = st.selectbox('Which vehicle are you interested in?', vehicle_list, index=None)
+
+    if vehicle_selection:
+
+        vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLE_ITEM_MAPPING").filter(col('"Vehicle"')==vehicle_selection).filter(col('"Part Type"')=='Tyre').select(col('"Part Name"'),col('"Add On Cost"'))
+        st.dataframe(data=vehicle_data, use_container_width=True, hide_index=True)
