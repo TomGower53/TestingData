@@ -1,3 +1,4 @@
 [theme] 
 base = "dark"
 textColor="#7BED66"
+borderColor = "#7BED66"
