@@ -1,2 +1,3 @@
 [theme] 
-backgroundColor="#7BED66"
+base = "dark"
+textColor="#7BED66"
