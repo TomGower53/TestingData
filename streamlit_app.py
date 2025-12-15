@@ -51,7 +51,7 @@ if customer_name:
 
             accessories_string = ", ".join(accessories)
 
-            st.write(accessories_string)
+            #st.write(accessories_string)
             #st.dataframe(data=accessories, use_container_width=True, hide_index=True)
             
             if accessories:
