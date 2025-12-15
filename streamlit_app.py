@@ -7,10 +7,6 @@ import pandas as pd
 
 # Write directly to the app
 st.image('https://hydnum.com/wp-content/uploads/2020/11/avant-logo-new-png-1.png', width="content")
-st.title(f":tractor: Machine Order :tractor:")
-
-# Write directly to the app
-st.image('https://hydnum.com/wp-content/uploads/2020/11/avant-logo-new-png-1.png', width="content")
 st.title(f":tractor: Machine Order")
 
 # Get the current credentials
