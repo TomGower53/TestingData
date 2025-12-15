@@ -12,12 +12,14 @@ session = cnx.session()
 
 def clear_text():
     st.session_state["input"] = ""
-    
-customer_name = st.text_input('Purchaser Name:')
-name_placeholder = st.empty()
-    
-if st.button('Submit order', on_click=clear_text):
-    customer_name.empty()
+
+st.text_input("Name", key="name")
+
+def set_name(name):
+    st.session_state.name = name
+
+st.button("Clear name", on_click=set_name, args=[""])
+st.button("Streamlit!", on_click=set_name, args=["Streamlit"])    
 
 st.stop()
 
