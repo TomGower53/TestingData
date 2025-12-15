@@ -77,9 +77,9 @@ if customer_name:
                     place_order1 = st.button('Confirm order')
 
 
-clear_name = st.button("Clear form", on_click=clear_all_names)
+    clear_name = st.button("Clear form", on_click=clear_all_names)
 
-if clear_name:
-    st.error("Are you sure you'd like to clear the form?")
-    if st.button("Confirm"):
-        run_expensive_function()
+    if clear_name:
+        st.error("Are you sure you'd like to clear the form?")
+        if st.button("Confirm"):
+            run_expensive_function()
