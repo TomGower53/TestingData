@@ -1,8 +1,7 @@
 # Import python packages
 import streamlit as st
 from snowflake.snowpark.functions import col
-
-
+    
 # Write directly to the app
 st.image('https://hydnum.com/wp-content/uploads/2020/11/avant-logo-new-png-1.png', width="content")
 st.title(f":tractor: Machine Order")
@@ -51,8 +50,33 @@ if customer_name:
             if accessories:
                 order_summary = """The order for """+customer_name+""" by """+sales_rep_string+""" is as follows. The """+vehicle_selection+""" with """+tyre_selection+""" tyres and """+accessories_string+""" accessories."""
                 st.write(order_summary)
+                confirm_order = st.button('Submit order')
 
+                if confirm_order:
+                    st.success("""Your order is currently pending. """+order_summary+""" If this is correct, confirm below and your order will be placed.""", icon="✅")
+                    
+                    place_order = st.button('Confirm order')
+
+                    if place_order:
+                        st.write("Thank you for the order")
+                        customer_name.empty()
+                        sales_rep_string.empty()
+                        vehicle_selection.empty()
+                        accessories.empty()
             else:
                 
                 order_summary1 = """The order for """+customer_name+""" by """+sales_rep_string+""" is as follows. The """+vehicle_selection+""" with """+tyre_selection+""" tyres and no further accessories."""
                 st.write(order_summary1)
+
+                confirm_order1 = st.button('Submit order')
+
+                if confirm_order1:
+                    st.success("""Your order is currently pending. """+order_summary1+""" If this is correct, confirm below and your order will be placed.""", icon="✅")
+                    
+                    place_order1 = st.button('Confirm order')
+
+                    if place_order1:
+                        st.write("Thank you for the order")
+                        customer_name.empty()
+                        sales_rep_string.empty()
+                        vehicle_selection.empty()
