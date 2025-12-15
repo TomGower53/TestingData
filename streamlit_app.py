@@ -65,11 +65,11 @@ if customer_name:
                 boom_list = session.table("TEST_DATABASE.PUBLIC.BOOM_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Boom Type"'),col('"Cost"'),col('"Load Capacity (KG)"'),col('"Add On Cost"'))
                 accessories_cols = ["Boom Type", "Cost", "Load Capacity (KG)"]
                 #st.dataframe(data=boom_list, use_container_width=True, hide_index=True)
-                st.dataframe(data=boom_list, use_container_width=True, hide_index=True, column_order=accessories_cols)
 
                 accessories = st.multiselect ('Add the accessories you wish to include', boom_list, key="accessories")
 
                 accessories_string = ", ".join(accessories)
+                st.dataframe(data=boom_list, use_container_width=True, hide_index=True, column_order=accessories_cols)
 
                 #st.write(accessories_string)
                 #st.dataframe(data=accessories, hide_index=True)
