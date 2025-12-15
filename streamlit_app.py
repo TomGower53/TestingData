@@ -10,19 +10,6 @@ st.title(f":tractor: Machine Order")
 cnx = st.connection("snowflake")
 session = cnx.session()
 
-def clear_text():
-    st.session_state["input"] = ""
-
-st.text_input("Name", key="name")
-
-def set_name(name):
-    st.session_state.name = name
-
-st.button("Clear name", on_click=set_name, args=[""])
-st.button("Streamlit!", on_click=set_name, args=["Streamlit"])    
-
-st.stop()
-
 customer_name = st.text_input('Purchaser Name:')
 
 if customer_name:
@@ -72,10 +59,6 @@ if customer_name:
 
                     if place_order:
                         st.write("Thank you for the order")
-                        customer_name.empty()
-                        sales_rep_string.empty()
-                        vehicle_selection.empty()
-                        accessories.empty()
             else:
                 
                 order_summary1 = """The order for """+customer_name+""" by """+sales_rep_string+""" is as follows. The """+vehicle_selection+""" with """+tyre_selection+""" tyres and no further accessories."""
@@ -90,6 +73,3 @@ if customer_name:
 
                     if place_order1:
                         st.write("Thank you for the order")
-                        customer_name.empty()
-                        sales_rep_string.empty()
-                        vehicle_selection.empty()
