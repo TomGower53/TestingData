@@ -84,42 +84,34 @@ if customer_name:
 
                     order_summary = """The """+vehicle_selection+""" with """+tyre_selection+""" tyres and """+accessories_string+""" accessories."""
                     st.write(order_summary)
+                    
+                    my_insert_stmt = """ INSERT INTO TEST_DATABASE.PUBLIC.CUSTOMER_ORDERS("Customer", "Sales Representative", "Vehicle", "Tyres", "Accessories")
+                        VALUES ('""" + customer_name + """','"""+sales_rep_string+ """','"""+vehicle_selection+ """','"""+tyre_selection+ """','"""+accessories_string+ """')"""
 
-                    confirm_order = st.button('Submit order')
+                    def insert_stm():
+                            session.sql(my_insert_stmt).collect()
+                        
+                    confirm_order = st.button('Submit order', on_click=insert_stm)
                 
                     if confirm_order:
-                        st.success("""Your order is currently pending. """+order_summary+""" If this is correct, confirm below and your order will be placed.""", icon="✅")
-
-                        my_insert_stmt = """ INSERT INTO TEST_DATABASE.PUBLIC.CUSTOMER_ORDERS("Customer", "Sales Representative", "Vehicle", "Tyres", "Accessories")
-                                VALUES ('""" + customer_name + """','"""+sales_rep_string+ """','"""+vehicle_selection+ """','"""+tyre_selection+ """','"""+accessories_string+ """')"""
-                        #st.write(my_insert_stmt)
-
-                        place_order = st.button('Confirm order')
-
-                        if place_order:
-                            session.sql(my_insert_stmt).collect()
-                            st.success("Your order has been placed. Once this has been processed, an invoice will be sent over.")
+                        st.success("Your order has been placed. Once this has been processed, an invoice will be sent over.", icon="✅")                           
 
                 else:
                 
                     order_summary1 = """The """+vehicle_selection+""" with """+tyre_selection+""" tyres and no further accessories."""
                     st.write(order_summary1)
+
+                    my_insert_stmt1 = """ insert into test_database.public.customer_orders("Customer", "Sales Representative", "Vehicle", "Tyres")
+                        values ('""" + customer_name + """','"""+sales_rep_string+ """','"""+vehicle_selection+ """','"""+tyre_selection+ """')"""
+
+                    def insert_stm1():
+                            session.sql(my_insert_stmt1).collect()
                 
-                    confirm_order1 = st.button('Submit order')
+                    confirm_order1 = st.button('Submit order', on_click=insert_stm1)
 
                     if confirm_order1:
-                        st.success("""Your order is currently pending. """+order_summary1+""" If this is correct, confirm below and your order will be placed.""", icon="✅")
+                        st.success("Your order has been placed. Once this has been processed, an invoice will be sent over.", icon="✅")
                     
-                        my_insert_stmt1 = """ insert into test_database.public.customer_orders("Customer", "Sales Representative", "Vehicle", "Tyres")
-                                values ('""" + customer_name + """','"""+sales_rep_string+ """','"""+vehicle_selection+ """','"""+tyre_selection+ """')"""
-                        #st.write(my_insert_stmt1)
-                        
-                        place_order1 = st.button('Confirm order')
-
-                        if place_order1:
-                            session.sql(my_insert_stmt1).collect()
-                            st.success("Your order has been placed. Once this has been processed, an invoice will be sent over.")
-
 
     clear_name = st.button("Clear form", on_click=clear_all_names)
 
