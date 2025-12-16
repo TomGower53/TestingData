@@ -43,7 +43,7 @@ if customer_name:
             chosen_vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Cost"'),col('"Lift Capacity (KG)"'),col('"Lift Height (m)"'),col('"Engine Power (hp)"'),col('"Maximum Speed (km/h)"'))
             st.dataframe(data=chosen_vehicle_data, use_container_width=True, hide_index=True)
 
-            vehicle_cost = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").filter(col('"Vehicle"')==vehicle_selection).select(col('"Cost"'))
+            #vehicle_cost = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").filter(col('"Vehicle"')==vehicle_selection).select(col('"Cost"'))
             #st.dataframe(data=vehicle_cost, use_container_width=True, hide_index=True)
             
             st.subheader("""Tyres for """+vehicle_selection)
@@ -58,7 +58,7 @@ if customer_name:
                 selected_tyres = session.table("TEST_DATABASE.PUBLIC.TYRES_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle_selection).filter(col('"Tyres"')==tyre_selection).select(col('"Cost"'),col('"Size"'),col('"Warranty"'),col('"Economy"'),col('"Grip"'))
                 st.dataframe(data=selected_tyres, use_container_width=True, hide_index=True)
 
-                tyre_cost = session.table("TEST_DATABASE.PUBLIC.VEHICLE_ITEM_MAPPING").filter(col('"Vehicle"')==vehicle_selection).filter(col('"Part Name"')==tyre_selection).select(col('"Add On Cost"'))
+                #tyre_cost = session.table("TEST_DATABASE.PUBLIC.VEHICLE_ITEM_MAPPING").filter(col('"Vehicle"')==vehicle_selection).filter(col('"Part Name"')==tyre_selection).select(col('"Add On Cost"'))
                 #st.write(tyre_cost)
 
                 st.subheader("""Booms for """+vehicle_selection)
@@ -68,17 +68,21 @@ if customer_name:
 
                 accessories = st.multiselect ('Add the accessories you wish to include', boom_list, key="accessories")
 
-                accessories_string = ", ".join(accessories)
+                sorted_accessories = sorted(accessories, key=lambda x: x[10], reverse=True)
+                accessories_string = ", ".join(sorted_accessories)
+                
                 st.dataframe(data=boom_list, use_container_width=True, hide_index=True, column_order=accessories_cols)
 
                 #st.write(accessories_string)
                 #st.dataframe(data=accessories, hide_index=True)
-            
+                
+                st.subheader("""Order Summary for """+customer_name)
+                
                 if accessories:
-                    accessories_cost = boom_list[boom_list["Boom Type"].isin(accessories)].select(col('"Add On Cost"'))
+                    #accessories_cost = boom_list[boom_list["Boom Type"].isin(accessories)].select(col('"Add On Cost"'))
                     #st.dataframe(data=accessories_cost, use_container_width=True, hide_index=True)
 
-                    order_summary = """The order for """+customer_name+""" by """+sales_rep_string+""" is as follows. The """+vehicle_selection+""" with """+tyre_selection+""" tyres and """+accessories_string+""" accessories."""
+                    order_summary = """The """+vehicle_selection+""" with """+tyre_selection+""" tyres and """+accessories_string+""" accessories."""
                     st.write(order_summary)
 
                     confirm_order = st.button('Submit order')
@@ -86,12 +90,19 @@ if customer_name:
                     if confirm_order:
                         st.success("""Your order is currently pending. """+order_summary+""" If this is correct, confirm below and your order will be placed.""", icon="✅")
 
+                        my_insert_stmt = """ INSERT INTO TEST_DATABASE.PUBLIC.CUSTOMER_ORDERS("Customer", "Sales Representative", "Vehicle", "Tyres", "Accessories")
+                                VALUES ('""" + customer_name + """','"""+sales_rep_string+ """','"""+vehicle_selection+ """','"""+tyre_selection+ """','"""+accessories_string+ """')"""
+                        #st.write(my_insert_stmt)
+
                         place_order = st.button('Confirm order')
 
+                        if place_order:
+                            session.sql(my_insert_stmt).collect()
+                            st.success("Your order has been placed. Once this has been processed, an invoice will be sent over.")
 
                 else:
                 
-                    order_summary1 = """The order for """+customer_name+""" by """+sales_rep_string+""" is as follows. The """+vehicle_selection+""" with """+tyre_selection+""" tyres and no further accessories."""
+                    order_summary1 = """The """+vehicle_selection+""" with """+tyre_selection+""" tyres and no further accessories."""
                     st.write(order_summary1)
                 
                     confirm_order1 = st.button('Submit order')
@@ -99,7 +110,15 @@ if customer_name:
                     if confirm_order1:
                         st.success("""Your order is currently pending. """+order_summary1+""" If this is correct, confirm below and your order will be placed.""", icon="✅")
                     
+                        my_insert_stmt1 = """ insert into test_database.public.customer_orders("Customer", "Sales Representative", "Vehicle", "Tyres")
+                                values ('""" + customer_name + """','"""+sales_rep_string+ """','"""+vehicle_selection+ """','"""+tyre_selection+ """')"""
+                        #st.write(my_insert_stmt1)
+                        
                         place_order1 = st.button('Confirm order')
+
+                        if place_order1:
+                            session.sql(my_insert_stmt1).collect()
+                            st.success("Your order has been placed. Once this has been processed, an invoice will be sent over.")
 
 
     clear_name = st.button("Clear form", on_click=clear_all_names)
