@@ -27,6 +27,8 @@ def clear_all_names():
 sales_member = session.table("TEST_DATABASE.PUBLIC.SALES_TEAM").select(col('Sales Team Name')).filter(col('Current_Employee')==1)
 sales_rep_string = st.selectbox('Sales Representative:', sales_member, index=None, key="sales_rep")
 
+sales_data = session.table("TEST_DATABASE.PUBLIC.MONTHLY_SALES").filter(col('"LatestMonth"')==1)
+
 missing_customer_details = session.table("TEST_DATABASE.PUBLIC.ORDER_SUMMARY").filter(col('"ValidCustomer"')==0).select(col('"Customer"'),col('"Order Summary"'),col('"Full Cost"'))
 def load_table_cd():
     return missing_customer_details.to_pandas()
