@@ -3,4 +3,4 @@ base = "dark"
 textColor="#7BED66"
 borderColor = "#7BED66"
 primaryColor = "#7BED66"
-chartCategoricalColors = ["#ed1c24"]
+chartCategoricalColors = ["#ed1c24", "#7BED66", "#ed1c24"]
