@@ -139,3 +139,9 @@ else:
         st.dataframe(data=pending_orders, width="stretch", hide_index=True)
     else:
         st.write("There are no pending orders.")
+
+st.subheader('Latest Month Sales')
+st.write("Sales By Team Member")
+st.bar_chart(data=sales_data, x="Sales Representative", y="Sales Volumes")
+st.write("Sales Cost By Team Member")
+st.bar_chart(data=sales_data, x="Sales Representative", y="Sales Cost")
