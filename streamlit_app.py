@@ -41,7 +41,18 @@ if customer_name:
             
             chosen_vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Cost"'),col('"Lift Capacity (KG)"'),col('"Lift Height (m)"'),col('"Engine Power (hp)"'),col('"Maximum Speed (km/h)"'))
             if vehicle_selection == "800":
-                st.image('https://www.avanttecno.com/application/files/3415/6094/9554/Avant-860i.jpg', width=500, horizontal_alignment="center")
+                st.image('https://www.avanttecno.com/application/files/3415/6094/9554/Avant-860i.jpg', width=400)
+            if vehicle_selection == "700":
+                st.image('https://www.avanttecno.com/application/files/5315/1842/4219/Avant_optidrive_745_etu.jpg', width=400)
+            if vehicle_selection == "600":
+                st.image('https://www.avanttecno.com/application/files/3315/1842/4509/avant_640_optidrive.jpg', width=400)
+            if vehicle_selection == "500":
+                st.image('https://www.avanttecno.com/application/files/3715/1842/4705/avant_530_1.jpg', width=400)
+            if vehicle_selection == "400":
+                st.image('https://www.avanttecno.com/application/files/5515/2222/0189/avant_423.jpg', width=400)
+            if vehicle_selection == "200":
+                st.image('https://www.avanttecno.com/application/files/7915/1842/5275/avant_200_kuormaaja_loader_studio_1.jpg', width=400)
+            
             
             st.dataframe(data=chosen_vehicle_data, use_container_width=True, hide_index=True)
 
