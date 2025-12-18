@@ -41,7 +41,7 @@ if customer_name:
             
             chosen_vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Cost"'),col('"Lift Capacity (KG)"'),col('"Lift Height (m)"'),col('"Engine Power (hp)"'),col('"Maximum Speed (km/h)"'))
             if vehicle_selection == "800":
-                t.image('https://www.avanttecno.com/application/files/3415/6094/9554/Avant-860i.jpg', width=500, horizontal_alignment="center")
+                st.image('https://www.avanttecno.com/application/files/3415/6094/9554/Avant-860i.jpg', width=500, horizontal_alignment="center")
             
             st.dataframe(data=chosen_vehicle_data, use_container_width=True, hide_index=True)
 
