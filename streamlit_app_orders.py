@@ -28,6 +28,7 @@ sales_member = session.table("TEST_DATABASE.PUBLIC.SALES_TEAM").select(col('Sale
 sales_rep_string = st.selectbox('Sales Representative:', sales_member, index=None, key="sales_rep")
 
 sales_data = session.table("TEST_DATABASE.PUBLIC.MONTHLY_SALES").filter(col('"LatestMonth"')==1)
+vehicle_data = session.table("TEST_DATABASE.PUBLIC.MONTHLY_SALES_VEHICLES").filter(col('"LatestMonth"')==1)
 
 missing_customer_details = session.table("TEST_DATABASE.PUBLIC.ORDER_SUMMARY").filter(col('"ValidCustomer"')==0).select(col('"Customer"'),col('"Order Summary"'),col('"Full Cost"'))
 def load_table_cd():
@@ -147,3 +148,6 @@ st.write("Sales By Team Member")
 st.bar_chart(data=sales_data, x="Sales Representative", y="Sales Volumes")
 st.write("Sales Cost By Team Member")
 st.bar_chart(data=sales_data, x="Sales Representative", y="Sales Cost")
+
+st.bar_chart(data=vehicle_data, x="Vehicle", y="Sales Volumes")
+
