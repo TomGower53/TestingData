@@ -148,6 +148,6 @@ st.write("Sales By Team Member")
 st.bar_chart(data=sales_data, x="Sales Representative", y="Sales Volumes")
 st.write("Sales Cost By Team Member")
 st.bar_chart(data=sales_data, x="Sales Representative", y="Sales Cost")
-
+st.write("Sales By Vehicles")
 st.bar_chart(data=vehicle_data, x="Vehicle", y="Sales Volumes")
 
