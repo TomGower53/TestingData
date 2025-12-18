@@ -12,7 +12,6 @@ st.title(f":tractor: Machine Order")
 # Get the current credentials
 cnx = st.connection("snowflake")
 session = cnx.session()
-
 def clear_all_names():
     st.session_state["name"] = ""
     st.session_state["sales_rep"] = ""
@@ -43,7 +42,11 @@ if customer_name:
             chosen_vehicle_data = session.table("TEST_DATABASE.PUBLIC.VEHICLES").filter(col('"Vehicle"')==vehicle_selection).select(col('"Cost"'),col('"Lift Capacity (KG)"'),col('"Lift Height (m)"'),col('"Engine Power (hp)"'),col('"Maximum Speed (km/h)"'))
             st.dataframe(data=chosen_vehicle_data, use_container_width=True, hide_index=True)
 
-            #vehicle_cost = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").filter(col('"Vehicle"')==vehicle_selection).select(col('"Cost"'))
+            vehicle_cost = session.table("TEST_DATABASE.PUBLIC.VEHICLE_OPTIONS").filter(col('"Vehicle"')==vehicle_selection).select(col('"Cost"'))
+            def vehicle_cost_pd():
+                return vehicle_cost.to_pandas()
+            vehicle_cost_table=vehicle_cost_pd()
+            vehicle_cost_table1 = vehicle_cost_table.rename(columns={"Cost": "Add On Cost"})
             #st.dataframe(data=vehicle_cost, use_container_width=True, hide_index=True)
             
             st.subheader("""Tyres for """+vehicle_selection)
@@ -58,7 +61,10 @@ if customer_name:
                 selected_tyres = session.table("TEST_DATABASE.PUBLIC.TYRES_FOR_VEHICLES").filter(col('"Vehicle"')==vehicle_selection).filter(col('"Tyres"')==tyre_selection).select(col('"Cost"'),col('"Size"'),col('"Warranty"'),col('"Economy"'),col('"Grip"'))
                 st.dataframe(data=selected_tyres, use_container_width=True, hide_index=True)
 
-                #tyre_cost = session.table("TEST_DATABASE.PUBLIC.VEHICLE_ITEM_MAPPING").filter(col('"Vehicle"')==vehicle_selection).filter(col('"Part Name"')==tyre_selection).select(col('"Add On Cost"'))
+                tyre_cost = session.table("TEST_DATABASE.PUBLIC.VEHICLE_ITEM_MAPPING").filter(col('"Vehicle"')==vehicle_selection).filter(col('"Part Name"')==tyre_selection).select(col('"Add On Cost"'))
+                def tyre_cost_pd():
+                    return tyre_cost.to_pandas()
+                tyre_cost_table=tyre_cost_pd()
                 #st.write(tyre_cost)
 
                 st.subheader("""Booms for """+vehicle_selection)
@@ -79,10 +85,18 @@ if customer_name:
                 st.subheader("""Order Summary for """+customer_name)
                 
                 if accessories:
-                    #accessories_cost = boom_list[boom_list["Boom Type"].isin(accessories)].select(col('"Add On Cost"'))
+                    accessories_cost = boom_list[boom_list["Boom Type"].isin(accessories)].select(col('"Add On Cost"'))
+                    def accessories_cost_pd():
+                        return accessories_cost.to_pandas()
+                    accessories_cost_table=accessories_cost_pd()
                     #st.dataframe(data=accessories_cost, use_container_width=True, hide_index=True)
 
-                    order_summary = """The """+vehicle_selection+""" with """+tyre_selection+""" tyres and """+accessories_string+""" accessories."""
+                    all_cost = pd.concat([vehicle_cost_table1, tyre_cost_table, accessories_cost_table])
+                    #st.dataframe(all_cost)
+                    all_cost_total = all_cost["Add On Cost"].sum()
+                    #st.write(all_cost_total)
+
+                    order_summary = """The """+vehicle_selection+""" with """+tyre_selection+""" tyres and """+accessories_string+""" accessories. Currently priced at £"""+str(all_cost_total)+"""."""
                     st.write(order_summary)
                     
                     my_insert_stmt = """ INSERT INTO TEST_DATABASE.PUBLIC.CUSTOMER_ORDERS("Customer", "Sales Representative", "Vehicle", "Tyres", "Accessories")
@@ -98,7 +112,10 @@ if customer_name:
 
                 else:
                 
-                    order_summary1 = """The """+vehicle_selection+""" with """+tyre_selection+""" tyres and no further accessories."""
+                    all_cost1 = pd.concat([vehicle_cost_table1, tyre_cost_table])
+                    all_cost_total1 = all_cost1["Add On Cost"].sum()
+                    
+                    order_summary1 = """The """+vehicle_selection+""" with """+tyre_selection+""" tyres and no further accessories. Currently priced at £"""+str(all_cost_total1)+"""."""
                     st.write(order_summary1)
 
                     my_insert_stmt1 = """ insert into test_database.public.customer_orders("Customer", "Sales Representative", "Vehicle", "Tyres")
